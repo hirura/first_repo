@@ -1,5 +1,9 @@
 # FirstRepo
 
+[![Build Status](https://travis-ci.org/hirura/first_repo.svg?branch=master)](https://travis-ci.org/hirura/first_repo)
+[![Maintainability](https://api.codeclimate.com/v1/badges/c9982b7707578ab46caf/maintainability)](https://codeclimate.com/github/hirura/first_repo/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/c9982b7707578ab46caf/test_coverage)](https://codeclimate.com/github/hirura/first_repo/test_coverage)
+
 Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/first_repo`. To experiment with that code, run `bin/console` for an interactive prompt.
 
 TODO: Delete this and the text above, and describe your gem
