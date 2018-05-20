@@ -29,6 +29,21 @@ script:
 after_script:
   - ./cc-test-reporter format-coverage --output coverage/codeclimate.$TRAVIS_BUILD_NUMBER.json
   - cat coverage/codeclimate.$TRAVIS_BUILD_NUMBER.json
+  - mkdir -p tmp
+  - cd tmp/
+  - git clone https://github.com/hirura/first_repo.git -b test-orphan
+  - mkdir -p first_repo/commits/$TRAVIS_BUILD_ID
+  - cd first_repo/commits/$TRAVIS_BUILD_ID
+  - cp ../../../../coverage/codeclimate.$TRAVIS_BUILD_NUMBER.json ./
+  - git add .
+  - git commit -m "$TRAVIS_BUILD_ID/$TRAVIS_BUILD_NUMBER"
+  - put push
+  - |
+    while [ $? -ne 0 ]
+    do
+      git pull --no-edit
+      git push
+    done
 jobs:
   include:
     - stage: upload-coverage
