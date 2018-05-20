@@ -38,6 +38,8 @@ after_script:
   - cd first_repo/commits/$TRAVIS_BUILD_ID
   - cp ../../../../coverage/codeclimate.$TRAVIS_BUILD_NUMBER.json ./
   - git add .
+  - echo $GH_USER_NAME
+  - git config --global user.name
   - git commit -m "$TRAVIS_BUILD_ID/$TRAVIS_BUILD_NUMBER"
   - put push
   - |
@@ -45,6 +47,7 @@ after_script:
     do
       git pull --no-edit
       git push
+      break
     done
 jobs:
   include:
