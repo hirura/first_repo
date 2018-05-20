@@ -12,10 +12,10 @@ before_install:
     declare -r SSH_FILE="$(mktemp -u $HOME/.ssh/XXXXX)"
     openssl aes-256-cbc -K $encrypted_7a820aabc92b_key -iv $encrypted_7a820aabc92b_iv -in id_rsa.enc -out $SSH_FILE -d
     chmod 600 "$SSH_FILE" 
-      && printf "%s\n" \
-           "Host github.com" \
-           "  IdentityFile $SSH_FILE" \
-           "  LogLevel ERROR" >> ~/.ssh/config
+    printf "%s\n" \
+      "Host github.com" \
+      "  IdentityFile $SSH_FILE" \
+      "  LogLevel ERROR" >> ~/.ssh/config
   - gem update --system --no-document
   - gem update --no-document
 install:
