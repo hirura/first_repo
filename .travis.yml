@@ -32,6 +32,7 @@ after_script:
 jobs:
   include:
     - stage: upload-coverage
+      if: NOT (type IN pull_request)
       rvm: 2.5
       script:
         - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
