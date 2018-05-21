@@ -1,77 +1,18 @@
 env:
   global:
     - CC_TEST_REPORTER_ID=26015bca33836107cc047f31e74fb99fc776a569232f7b0248586c3e7d82b141
-    - secure: "AoJST+tZAa9lxmganidY1gBtj39Iqkd4CrSzc78PK66/pjKUFl3RFdwjsNt2fkmKPsfxlcFNdn2xsCsYuJDx1nKvGtVFGQqC/2Xm5KNNlu/2MzbIMPJ8rsPYNnFmeJR7WYBvBdMCJ/nArkmtlB2OSkoMTv+ZAD71vZqLEuf7Xg169nc4dNWOVjcpSSr9kfiYLfJkfx7JfWaAcGQK5TovKZe67vGeLLrf1CYTzaKE4yt478kr/25Y3G/CP4G8J96AkUKV1BUxnD1GLL03z/wIkk3t2pPvF+uRxt8Weo2pGNn6POXpJqkxqY/HVtBntggSxArWQTuoXR0lCJkwkmub0gL3GbUdNhM4AR+OObMp94nYHu2JQwc5hWeg15BO/rEh4IGiQg1eurqdg8oNNBh7/b9p8dy8uStvKy+H8MaA66wb9E+pyJVyA9GNQEXjmUpudOJFhFRDihQJXGXk0cWYcncA2NgHpbQFIQmxo4Du3c/pUKp8y5y5M9sAjEJYkiZEYpqQujHPpv9FGcJFye5qASsFAGzgj+8z34HQ7/nvGFliQt2dy9GITx3bAlNCx3Yyx+tlWqlSP51avYgK3u6GNiL/hwLzRjuK3uG2q+0Sku/Gj4gDw/F2kT42GslG64FK/G3/g61KAZ6tU+JdIhzQuAp+9zL/5M+2s6RVFU3SRpc="
 sudo: false
 language: ruby
 rvm:
   - 2.4
   - 2.5
 before_install:
-  - |
-    declare -r SSH_FILE="$(mktemp -u $HOME/.ssh/XXXXX)"
-    openssl aes-256-cbc -K $encrypted_7a820aabc92b_key -iv $encrypted_7a820aabc92b_iv -in id_rsa.enc -out $SSH_FILE -d
-    chmod 600 "$SSH_FILE" 
-    printf "%s\n" \
-      "Host github.com" \
-      "  IdentityFile $SSH_FILE" \
-      "  LogLevel ERROR" >> ~/.ssh/config
-  - git config --global user.name $GH_USER_NAME
-  - git config --global user.email $GH_USER_EMAIL
   - gem update --system --no-document
   - gem update --no-document
 install:
   - gem install bundler --no-document
   - bundle install --path vendor/bundle
-before_script:
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
   - chmod +x ./cc-test-reporter
 script:
   - bundle exec rake spec
-after_script:
-  - ./cc-test-reporter format-coverage --output coverage/codeclimate.$TRAVIS_BUILD_NUMBER.json
-  - cat coverage/codeclimate.$TRAVIS_BUILD_NUMBER.json
-  - mkdir -p tmp
-  - cd tmp/
-  - git clone https://github.com/hirura/first_repo.git -b test-orphan
-  - mkdir -p first_repo/commits/$TRAVIS_BUILD_ID
-  - cd first_repo/commits/$TRAVIS_BUILD_ID
-  - cp ../../../../coverage/codeclimate.$TRAVIS_BUILD_NUMBER.json ./
-  - git add .
-  - echo $GH_USER_NAME
-  - git config --global user.name
-  - git commit -m "$TRAVIS_BUILD_ID/$TRAVIS_BUILD_NUMBER"
-  - put push
-  - |
-    while [ $? -ne 0 ]
-    do
-      git pull --no-edit
-      git push
-      break
-    done
-jobs:
-  include:
-    - stage: upload-coverage
-      if: NOT (type IN pull_request)
-      rvm: 2.5
-      script:
-        - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-        - chmod +x ./cc-test-reporter
-        - echo 'in upload-coverage stage'
-        - pwd
-        - whoami
-        - mkdir -p tmp
-        - cd tmp/
-        - git init first_repo
-        - cd first_repo
-        - git remote add -f origin https://github.com/hirura/first_repo.git
-        - git config core.sparseCheckout true
-        - echo "commits/commit2/" >.git/info/sparse-checkout
-        - git pull origin test-orphan
-        - git checkout test-orphan
-        - mkdir -p commits/commit2/
-        - cd commits/commit2/
-        - pwd
-stages:
-  - test
-  - upload-coverage
