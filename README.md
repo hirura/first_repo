@@ -1,6 +1,6 @@
 # FirstRepo
 
-[![Build Status](https://travis-ci.org/hirura/first_repo.svg?branch=master)](https://travis-ci.org/hirura/first_repo)
+[![Build Status](https://travis-ci.com/hirura/first_repo.svg?branch=master)](https://travis-ci.com/hirura/first_repo)
 [![Maintainability](https://api.codeclimate.com/v1/badges/c9982b7707578ab46caf/maintainability)](https://codeclimate.com/github/hirura/first_repo/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/c9982b7707578ab46caf/test_coverage)](https://codeclimate.com/github/hirura/first_repo/test_coverage)
 
