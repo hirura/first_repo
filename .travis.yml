@@ -4,15 +4,30 @@ env:
 sudo: false
 language: ruby
 rvm:
+  - 2.0
+  - 2.1
+  - 2.2
+  - 2.3
   - 2.4
   - 2.5
+  - 2.6
+  - 2.7
+  - ruby-head
+jobs:
+  allow_failures:
+    - rvm: ruby-head
 before_install:
-  - gem update --system --no-document
-  - gem update --no-document
+  - gem uninstall -v '>= 2' -i $(rvm gemdir)@global -ax bundler || true
+  - gem install bundler -v '< 2'
+  - yes | gem update --system --force
+  - gem update bundler
 install:
-  - gem install bundler --no-document
-  - bundle install --path vendor/bundle
+  - bundle install
+before_script:
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
   - chmod +x ./cc-test-reporter
+  - ./cc-test-reporter before-build
 script:
   - bundle exec rake spec
+after_script:
+  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
